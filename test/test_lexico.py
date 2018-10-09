@@ -19,6 +19,7 @@ def test_regex(tokens):
         #11-15          
         test_regex_simple(tokens["STRING"], '"    Esto es un string    "', True),
         test_regex_simple(tokens["STRING"], 'No es un string"', False),                     
+        test_regex_simple(tokens["STRING"], '"No es un string', False),                     
         test_regex_simple(tokens["STRING"], 'Tampoco es un string', False),                 
         test_regex_simple(tokens["STRING"], '"Esto deberia ser un error""', False),         
         test_regex_simple(tokens["STRING"], '"Esto deberia "ser un error"', False),         
@@ -28,6 +29,9 @@ def test_regex(tokens):
         test_regex_simple(tokens["STRING"], '"Y esto " tambien"', False),                    
         test_regex_simple(tokens["STRING"], '"Esto \\" esta bien"', True),                    
         test_regex_simple(tokens["STRING"], '', False),
+        test_regex_simple(tokens["COMMENT"], '/*Esto es un comentario*/', True),
+        test_regex_simple(tokens["COMMENT"], '/*Esto es * un comentario*/', True),
+        test_regex_simple(tokens["COMMENT"], '/*No es un comentario*', False),
         #21-25                  
         test_regex_simple(tokens["OP_PLUS"], '+', True),                                    
         test_regex_simple(tokens["OP_PLUS"], '1+', False),                                  

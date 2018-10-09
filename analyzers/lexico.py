@@ -18,6 +18,7 @@ tokens_regex = {
     'STRING': r"^\"(.[^(\")]|(\\\")|(?:\s*))*\"$",
     # Must have at least one digit
     'INTEGER': r"^[0-9]+$",
+    'COMMENT': r"^\/\*.*\*\/$",
     "OP_PLUS": r"^\+$",
     'OP_DOUBLEPLUS': r"^\+\+$",
     'OP_DOUBLEQUAL': r"^==$",
