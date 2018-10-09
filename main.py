@@ -1,9 +1,14 @@
 import sys
 
+
 import ply.lex as lex
 import ply.yacc as yacc
 
+sys.path.append('./analyzers')
 import lexico
+
+
+
 
 if __name__ == '__main__':
     if(len(sys.argv) != 2):
