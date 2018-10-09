@@ -19,4 +19,4 @@ if __name__ == '__main__':
             print('You must enter a path to your file like: ./src/script.js\n')
             sys.exit()
         else:
-            f = open(sys.argv[1], "r")
+            lexico.Lexico(sys.argv[1])
