@@ -59,28 +59,28 @@ class Lexico:
 
         # identifying
         "STATUS_9": [
-            {"target":"15","char":"LETTER","tot":None},
-            {"target":"15","char":"DIGIT","tot":None},
-            {"target":"15","char":"_","tot": None},
-            {"target":"17","char":"O.C.","tot":"IDENTIFYING"},
+            {"target":"9","char":"LETTER","tot":None},
+            {"target":"9","char":"DIGIT","tot":None},
+            {"target":"9","char":"_","tot": None},
+            {"target":"17","char":"DELIMITER","tot":"IDENTIFYING"},
         ],
 
         # number
         "STATUS_10": [
             {"target":"10","char":"DIGIT","tot": None},
-            {"target":"15","char":"O.C.","tot":"INTEGER", "is_final": True}
+            {"target":"15","char":"O.C.","tot":"INTEGER"}
         ]
     }
 
     def handle_column(self, c):
+        if len(c) == 0:
+            return 0
+
         if ord(c) == ord('\n'):
             self.line = self.line + 1    
             self.column = ''
         else:
             self.column = self.column + c
-
-    def is_delimiter(self, c):
-        return ord(c) in self.delimiters
 
     def get_transition(self, c):
         transitions = self.afd["STATUS_" + self.status]
@@ -101,28 +101,44 @@ class Lexico:
         print((len(self.column) - 1) * ' ' + '^')
         print('Error in line ' + str(self.line) + " and column " + str(len(self.column)))
 
+    def already_in_symbol_table(self, id):
+        return True
+
     def generate_token(self):
-        print("GENERAR TOKEN")
+        print("GENERAR TOKEN: " + self.content)
+
 
     def handle_char(self, c):
+        if ord(c) == 10:
+            return -1
+
         self.handle_column(c)
         transition = self.get_transition(c)
         if transition == None:
             self.print_error()
-            return 0
-        if transition["char"] != "O.C.":
+            return -1
+
+        if transition["char"] != "O.C." or transition["char"] != "DELIMITER":
+            print(c)
             self.content = self.content + c
         
         if transition["tot"] != None:
-            if transition["tot"] == ''
-            self.generate_token()
+            if transition["tot"] == 'IDENTIFYING' and not self.already_in_symbol_table(self.content):
+                print("variable o PR ya existe")
+            else:
+                self.generate_token()
+            self.content = ''
+            self.status = '0'
+        else:
+            self.status = transition["target"]
+        
         
         
 
     def __init__(self, path):
         with open(path) as f:
             while True:
-                if self.handle_char(f.read(1)) == 0:
+                if self.handle_char(f.read(1)) == -1:
                     break
             f.close()
 
