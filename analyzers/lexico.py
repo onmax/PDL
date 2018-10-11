@@ -17,41 +17,41 @@ class Lexico:
     afd = {
         "STATUS_0": [
             {"target":"0","char":"DELIMITER","tot": None, "is_final": False},
-            {"target":"1","char":"(","tot":"op_openparentheses", "is_final": True},
-            {"target":"2","char":")","tot":"op_closeparentheses", "is_final": True},
-            {"target":"3","char":"{","tot":"op_openbracket", "is_final": True},
-            {"target":"4","char":"}","tot":"op_closebracket", "is_final": True},
-            {"target":"5","char":"+","tot":"", "is_final": False},
-            {"target":"6","char":"&","tot":"op_andand", "is_final": False},
+            {"target":"1","char":"(","tot":"op_openparentheses"},
+            {"target":"2","char":")","tot":"op_closeparentheses"},
+            {"target":"3","char":"{","tot":"op_openbracket"},
+            {"target":"4","char":"}","tot":"op_closebracket"},
+            {"target":"5","char":"+","tot": None, "is_final": False},
+            {"target":"6","char":"&","tot": None, "is_final": False},
             {"target":"7","char":"=","tot":"op_doubleequal", "is_final": False},
             {"target":"8","char":"/","tot":"comment", "is_final": False},
             {"target":"9","char": "LETTER", "tot":"identifying", "is_final": False},
             {"target":"10","char":"DIGIT","tot":"integer", "is_final": False},
         ],
         "STATUS_5": [
-            {"target":"11","char":"+","tot":"", "is_final": True},
-            {"target":"12","char":"O.C.","tot":"", "is_final": True} 
+            {"target":"11","char":"+","tot":"op_doubleplus"},
+            {"target":"12","char":"DELIMITER","tot":"op_plus"} 
         ],
         "STATUS_6": [
-            {"target":"13","char":"&","tot":"op_andand", "is_final": True},
+            {"target":"13","char":"&","tot":"op_andand"},
         ],
         "STATUS_7": [
-            {"target":"14","char":"=","tot":"op_doubleequal", "is_final": True},
+            {"target":"14","char":"=","tot":"op_doubleequal"},
         ],
 
 
         
         # Comment
         "STATUS_8": [
-            {"target":"15","char":"*","tot":"comment", "is_final": False},
+            {"target":"15","char":"*","tot": None},
         ],
         "STATUS_15": [
-            {"target":"16","char":"*","tot":"comment", "is_final": False},
-            {"target":"15","char":"O.C.","tot":"comment", "is_final": False},
+            {"target":"16","char":"*","tot": None},
+            {"target":"15","char":"O.C.","tot": None},
         ],
         "STATUS_16": [
-            {"target":"17","char":"/","tot":"comment", "is_final": True},
-            {"target":"15","char":"O.C.","tot":"comment", "is_final": False},
+            {"target":"17","char":"/","tot":"comment"},
+            {"target":"15","char":"O.C.","tot": None},
         ],
         # End of comment
 
@@ -99,7 +99,10 @@ class Lexico:
     def print_error(self):
         print(self.column)
         print((len(self.column) - 1) * ' ' + '^')
-        print('Error in line ' + str(self.line))
+        print('Error in line ' + str(self.line) + " and column " + str(len(self.column)))
+
+    def generate_token(self):
+        print("GENERAR TOKEN")
 
     def handle_char(self, c):
         self.handle_column(c)
@@ -107,6 +110,11 @@ class Lexico:
         if transition == None:
             self.print_error()
             return 0
+        if transition["char"] != "O.C.":
+            self.content = self.content + c
+        
+        if transition["is_final"]:
+            self.generate_token()
         
         
 
