@@ -11,6 +11,8 @@ class Lexico:
 
     delimiters = [ord(' '), ord('\n')]
 
+    comment_status = [8, 15, 16]
+
     status = "0"
     content = ""
 
@@ -68,7 +70,7 @@ class Lexico:
         # number
         "STATUS_10": [
             {"target":"10","char":"DIGIT","tot": None},
-            {"target":"15","char":"O.C.","tot":"INTEGER"}
+            {"target":"15","char":"DELIMITER","tot":"INTEGER"}
         ]
     }
 
@@ -83,6 +85,7 @@ class Lexico:
             self.column = self.column + c
 
     def get_transition(self, c):
+        
         transitions = self.afd["STATUS_" + self.status]
         transition = None
         for _transition in transitions:
@@ -109,18 +112,20 @@ class Lexico:
 
 
     def handle_char(self, c):
-        if ord(c) == 10:
-            return -1
-
+        if len(c) == 0:
+            return 0
         self.handle_column(c)
         transition = self.get_transition(c)
         if transition == None:
             self.print_error()
-            return -1
-
+            return 0
         if transition["char"] != "O.C." or transition["char"] != "DELIMITER":
-            print(c)
-            self.content = self.content + c
+            if ord(c) != ord(' ') and ord(c) != ord('\n') or self.status in self.comment_status:
+                self.content = self.content + c
+
+        else:
+            self.content = ''
+        
         
         if transition["tot"] != None:
             if transition["tot"] == 'IDENTIFYING' and not self.already_in_symbol_table(self.content):
@@ -131,6 +136,7 @@ class Lexico:
             self.status = '0'
         else:
             self.status = transition["target"]
+        return 1
         
         
         
@@ -138,7 +144,7 @@ class Lexico:
     def __init__(self, path):
         with open(path) as f:
             while True:
-                if self.handle_char(f.read(1)) == -1:
+                if self.handle_char(f.read(1)) == 0:
                     break
             f.close()
 
