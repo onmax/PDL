@@ -16,7 +16,7 @@ class Lexico:
 
     afd = {
         "STATUS_0": [
-            {"target":"0","char":"DELIMITER","tot": None, "is_final": False},
+            {"target":"0","char":"DELIMITER","tot": None},
             {"target":"1","char":"(","tot":"op_openparentheses"},
             {"target":"2","char":")","tot":"op_closeparentheses"},
             {"target":"3","char":"{","tot":"op_openbracket"},
