@@ -59,15 +59,15 @@ class Lexico:
 
         # identifying
         "STATUS_9": [
-            {"target":"15","char":"LETTER","tot":"identifying", "is_final": False},
-            {"target":"15","char":"DIGIT","tot":"identifying", "is_final": False},
-            {"target":"15","char":"_","tot":"identifying", "is_final": False},
-            {"target":"17","char":"O.C.","tot":"identifying", "is_final": True},
+            {"target":"15","char":"LETTER","tot":None},
+            {"target":"15","char":"DIGIT","tot":None},
+            {"target":"15","char":"_","tot": None},
+            {"target":"17","char":"O.C.","tot":"identifying"},
         ],
 
         # number
         "STATUS_10": [
-            {"target":"10","char":"DIGIT","tot":"integer", "is_final": False},
+            {"target":"10","char":"DIGIT","tot": None},
             {"target":"15","char":"O.C.","tot":"integer", "is_final": True}
         ]
     }
