@@ -17,10 +17,10 @@ class Lexico:
     afd = {
         "STATUS_0": [
             {"target":"0","char":"DELIMITER","tot": None},
-            {"target":"1","char":"(","tot":"op_openparentheses"},
-            {"target":"2","char":")","tot":"op_closeparentheses"},
-            {"target":"3","char":"{","tot":"op_openbracket"},
-            {"target":"4","char":"}","tot":"op_closebracket"},
+            {"target":"1","char":"(","tot":"OP_OPENPARENTHESIS"},
+            {"target":"2","char":")","tot":"OP_CLOSEPARENTHESIS"},
+            {"target":"3","char":"{","tot":"OP_OPENBRACKET"},
+            {"target":"4","char":"}","tot":"OP_CLOSEBRACKET"},
             {"target":"5","char":"+","tot": None},
             {"target":"6","char":"&","tot": None},
             {"target":"7","char":"=","tot": None},
