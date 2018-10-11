@@ -20,3 +20,4 @@ if __name__ == '__main__':
             sys.exit()
         else:
             lexico.Lexico(sys.argv[1])
+            
