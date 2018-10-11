@@ -21,22 +21,22 @@ class Lexico:
             {"target":"2","char":")","tot":"op_closeparentheses"},
             {"target":"3","char":"{","tot":"op_openbracket"},
             {"target":"4","char":"}","tot":"op_closebracket"},
-            {"target":"5","char":"+","tot": None, "is_final": False},
-            {"target":"6","char":"&","tot": None, "is_final": False},
-            {"target":"7","char":"=","tot":"op_doubleequal", "is_final": False},
-            {"target":"8","char":"/","tot":"comment", "is_final": False},
-            {"target":"9","char": "LETTER", "tot":"identifying", "is_final": False},
-            {"target":"10","char":"DIGIT","tot":"integer", "is_final": False},
+            {"target":"5","char":"+","tot": None},
+            {"target":"6","char":"&","tot": None},
+            {"target":"7","char":"=","tot": None},
+            {"target":"8","char":"/","tot": None},
+            {"target":"9","char": "LETTER", "tot": None},
+            {"target":"10","char":"DIGIT","tot":None},
         ],
         "STATUS_5": [
-            {"target":"11","char":"+","tot":"op_doubleplus"},
-            {"target":"12","char":"DELIMITER","tot":"op_plus"} 
+            {"target":"11","char":"+","tot":"OP_DOUBLEPLUS"},
+            {"target":"12","char":"DELIMITER","tot":"OP_PLUS"} 
         ],
         "STATUS_6": [
-            {"target":"13","char":"&","tot":"op_andand"},
+            {"target":"13","char":"&","tot":"OP_ANDAND"},
         ],
         "STATUS_7": [
-            {"target":"14","char":"=","tot":"op_doubleequal"},
+            {"target":"14","char":"=","tot":"OP_DOUBLEEQUAL"},
         ],
 
 
@@ -50,7 +50,7 @@ class Lexico:
             {"target":"15","char":"O.C.","tot": None},
         ],
         "STATUS_16": [
-            {"target":"17","char":"/","tot":"comment"},
+            {"target":"17","char":"/","tot":"COMMENT"},
             {"target":"15","char":"O.C.","tot": None},
         ],
         # End of comment
@@ -62,13 +62,13 @@ class Lexico:
             {"target":"15","char":"LETTER","tot":None},
             {"target":"15","char":"DIGIT","tot":None},
             {"target":"15","char":"_","tot": None},
-            {"target":"17","char":"O.C.","tot":"identifying"},
+            {"target":"17","char":"O.C.","tot":"IDENTIFYING"},
         ],
 
         # number
         "STATUS_10": [
             {"target":"10","char":"DIGIT","tot": None},
-            {"target":"15","char":"O.C.","tot":"integer", "is_final": True}
+            {"target":"15","char":"O.C.","tot":"INTEGER", "is_final": True}
         ]
     }
 
@@ -113,7 +113,8 @@ class Lexico:
         if transition["char"] != "O.C.":
             self.content = self.content + c
         
-        if transition["is_final"]:
+        if transition["tot"] != None:
+            if transition["tot"] == ''
             self.generate_token()
         
         
