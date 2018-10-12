@@ -5,6 +5,7 @@ sys.path.append("./test")
 import ply.lex as lex
 import ply.yacc as yacc
 
+
 class Lexico:
     line = 1
     column = ''
@@ -18,42 +19,42 @@ class Lexico:
 
     afd = {
         "STATUS_0": [
-            {"target":"0","char":"DELIMITER","tot": None},
-            {"target":"1","char":"(","tot":"OP_OPENPARENTHESIS"},
-            {"target":"2","char":")","tot":"OP_CLOSEPARENTHESIS"},
-            {"target":"3","char":"{","tot":"OP_OPENBRACKET"},
-            {"target":"4","char":"}","tot":"OP_CLOSEBRACKET"},
-            {"target":"5","char":"+","tot": None},
-            {"target":"6","char":"&","tot": None},
-            {"target":"7","char":"=","tot": None},
-            {"target":"8","char":"/","tot": None},
-            {"target":"9","char": "LETTER", "tot": None},
-            {"target":"10","char":"DIGIT","tot":None},
+            {"target": "0", "char": "DELIMITER", "tot": None},
+            {"target": "1", "char": "(", "tot": "OP_OPENPARENTHESIS"},
+            {"target": "2", "char": ")", "tot": "OP_CLOSEPARENTHESIS"},
+            {"target": "3", "char": "{", "tot": "OP_OPENBRACKET"},
+            {"target": "4", "char": "}", "tot": "OP_CLOSEBRACKET"},
+            {"target": "5", "char": "+", "tot": None},
+            {"target": "6", "char": "&", "tot": None},
+            {"target": "7", "char": "=", "tot": None},
+            {"target": "8", "char": "/", "tot": None},
+            {"target": "9", "char": "LETTER", "tot": None},
+            {"target": "10", "char": "DIGIT", "tot": None},
         ],
         "STATUS_5": [
-            {"target":"11","char":"+","tot":"OP_DOUBLEPLUS"},
-            {"target":"12","char":"DELIMITER","tot":"OP_PLUS"} 
+            {"target": "11", "char": "+", "tot": "OP_DOUBLEPLUS"},
+            {"target": "12", "char": "DELIMITER", "tot": "OP_PLUS"}
         ],
         "STATUS_6": [
-            {"target":"13","char":"&","tot":"OP_ANDAND"},
+            {"target": "13", "char": "&", "tot": "OP_ANDAND"},
         ],
         "STATUS_7": [
-            {"target":"14","char":"=","tot":"OP_DOUBLEEQUAL"},
+            {"target": "14", "char": "=", "tot": "OP_DOUBLEEQUAL"},
         ],
 
 
-        
+
         # Comment
         "STATUS_8": [
-            {"target":"15","char":"*","tot": None},
+            {"target": "15", "char": "*", "tot": None},
         ],
         "STATUS_15": [
-            {"target":"16","char":"*","tot": None},
-            {"target":"15","char":"O.C.","tot": None},
+            {"target": "16", "char": "*", "tot": None},
+            {"target": "15", "char": "O.C.", "tot": None},
         ],
         "STATUS_16": [
-            {"target":"17","char":"/","tot":"COMMENT"},
-            {"target":"15","char":"O.C.","tot": None},
+            {"target": "17", "char": "/", "tot": "COMMENT"},
+            {"target": "15", "char": "O.C.", "tot": None},
         ],
         # End of comment
 
@@ -61,16 +62,16 @@ class Lexico:
 
         # identifying
         "STATUS_9": [
-            {"target":"9","char":"LETTER","tot":None},
-            {"target":"9","char":"DIGIT","tot":None},
-            {"target":"9","char":"_","tot": None},
-            {"target":"17","char":"DELIMITER","tot":"IDENTIFYING"},
+            {"target": "9", "char": "LETTER", "tot": None},
+            {"target": "9", "char": "DIGIT", "tot": None},
+            {"target": "9", "char": "_", "tot": None},
+            {"target": "17", "char": "DELIMITER", "tot": "IDENTIFYING"},
         ],
 
         # number
         "STATUS_10": [
-            {"target":"10","char":"DIGIT","tot": None},
-            {"target":"15","char":"DELIMITER","tot":"INTEGER"}
+            {"target": "10", "char": "DIGIT", "tot": None},
+            {"target": "15", "char": "DELIMITER", "tot": "INTEGER"}
         ]
     }
 
@@ -79,22 +80,21 @@ class Lexico:
             return 0
 
         if ord(c) == ord('\n'):
-            self.line = self.line + 1    
+            self.line = self.line + 1
             self.column = ''
         else:
             self.column = self.column + c
 
     def get_transition(self, c):
-        
         transitions = self.afd["STATUS_" + self.status]
         transition = None
         for _transition in transitions:
             char = _transition["char"]
             if (char == "DELIMITER" and ord(c) in self.delimiters
-            or char == "DIGIT" and c.isdigit()
-            or char == "LETTER" and c.isalpha()
-            or char == "O.C."
-            or char == c):
+                or char == "DIGIT" and c.isdigit()
+                or char == "LETTER" and c.isalpha()
+                or char == "O.C."
+                    or char == c):
                 transition = _transition
                 break
         return transition
@@ -102,14 +102,14 @@ class Lexico:
     def print_error(self):
         print(self.column)
         print((len(self.column) - 1) * ' ' + '^')
-        print('Error in line ' + str(self.line) + " and column " + str(len(self.column)))
+        print('Error in line ' + str(self.line) +
+              " and column " + str(len(self.column)))
 
     def already_in_symbol_table(self, id):
         return True
 
-    def generate_token(self):
-        print("GENERAR TOKEN: " + self.content)
-
+    def generate_token(self, transition):
+        print("GENERAR TOKEN: " + transition["tot"] + ' ' + self.content)
 
     def handle_char(self, c):
         if len(c) == 0:
@@ -125,21 +125,17 @@ class Lexico:
 
         else:
             self.content = ''
-        
-        
+
         if transition["tot"] != None:
             if transition["tot"] == 'IDENTIFYING' and not self.already_in_symbol_table(self.content):
                 print("variable o PR ya existe")
             else:
-                self.generate_token()
+                self.generate_token(transition)
             self.content = ''
             self.status = '0'
         else:
             self.status = transition["target"]
         return 1
-        
-        
-        
 
     def __init__(self, path):
         with open(path) as f:
@@ -147,4 +143,3 @@ class Lexico:
                 if self.handle_char(f.read(1)) == 0:
                     break
             f.close()
-
