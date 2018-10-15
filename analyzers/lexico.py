@@ -16,6 +16,8 @@ class Lexico:
     # TO DO: Add states of string like comment
     string_status = []
 
+    tokens = []
+
     status = 0
     content = ""
 
@@ -111,7 +113,7 @@ class Lexico:
         return False
 
     def generate_token(self, transition):
-        print("<" + transition["tot"] + "," + self.content + ">")
+        self.tokens.append((transition["tot"], self.content))
 
     def handle_char(self, c):
         self.handle_column(c)
@@ -139,6 +141,8 @@ class Lexico:
         # We generate token with the exception of identifying
         if transition["tot"] == 'IDENTIFYING' and self.already_in_symbol_table(self.content):
             print("variable o PR ya existe")
+        elif transition["tot"] == "COMMENT":
+            print("Comment: No way. I can't generate a token with " + self.content)
         else:
             self.generate_token(transition)
 
@@ -152,4 +156,5 @@ class Lexico:
                 c = f.read(1)
                 if len(c) == 0 or self.handle_char(c) == 0:
                     break
+            print(self.tokens)
             f.close()
