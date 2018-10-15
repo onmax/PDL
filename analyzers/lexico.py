@@ -2,8 +2,7 @@
 import sys
 sys.path.append("./test")
 
-import ply.lex as lex
-import ply.yacc as yacc
+# import ply.lex as lex
 
 
 class Lexico:
@@ -17,7 +16,7 @@ class Lexico:
     # TO DO: Add states of string like comment
     string_status = []
 
-    status = "0"
+    status = 0
     content = ""
 
     afd = {
@@ -112,7 +111,7 @@ class Lexico:
         return False
 
     def generate_token(self, transition):
-        print("GENERAR TOKEN: " + transition["tot"] + ' ' + self.content)
+        print("<" + transition["tot"] + "," + self.content + ">")
 
     def handle_char(self, c):
         self.handle_column(c)

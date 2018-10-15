@@ -1,10 +1,5 @@
 import sys
-
-
-import ply.lex as lex
-import ply.yacc as yacc
-
-from analyzers import lexico
+from analyzers.lexico import Lexico as lex
 
 
 if __name__ == '__main__':
@@ -16,4 +11,4 @@ if __name__ == '__main__':
             print('You must enter a path to your file like: ./src/script.js\n')
             sys.exit()
         else:
-            lexico.Lexico(sys.argv[1])
+            lex(sys.argv[1])
