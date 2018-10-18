@@ -1,11 +1,12 @@
 
-import sys
-sys.path.append("./test")
+import pprint
 
 # import ply.lex as lex
 
 
 class Lexico:
+    pp = pprint.PrettyPrinter(indent=4)
+
     line = 1
     column = ''
 
@@ -21,28 +22,30 @@ class Lexico:
     #
     #   RANGE AFD
     #       undefined: > 1000:
+    afd_ranges.append(('undefined', ({"start":1000, "end": 99999})))
     #           1001: Starts with / and it can be division or comment
     #
     #       single-character: 1-50
     #       double-character: 51-100
-    afd_ranges.append(('character', range(1, 100)))
+    afd_ranges.append(('character', ({"start":1, "end": 100})))
     #
     #       Number: 101-200
     #           Integer: 101-105
-    afd_ranges.append(('integer', range(101, 105)))
+    afd_ranges.append(('integer', ({"start":101, "end": 105})))
     #
     #       Identyfying: 201-300
-    afd_ranges.append(('identyfying', range(201, 300)))
+    afd_ranges.append(('identyfying', ({"start":201, "end": 300})))
     #
     #       String: 301-400
     #           With ": 301-310
     #           With ': 311-320
-    afd_ranges.append(('string', range(301, 320)))
+    afd_ranges.append(('string with "', ({"start":301, "end": 310})))
     #
     #       Comments: 401-500
     #          Line: 401-410
     #          Block: 411-420
-    afd_ranges.append(('comment', range(401, 420)))
+    afd_ranges.append(('line comment', ({"start":401, "end": 410})))
+    afd_ranges.append(('block comment', ({"start":411, "end": 420})))
     #
     afd = {
         "STATUS_0": [
@@ -117,23 +120,40 @@ class Lexico:
     }
 
 
-    def getRangeName(self):
-        pass
+    def is_char(self, c):
+        if c in ["DELIMITER", "DIGIT", "LETTER"]:
+            return c
+        else:
+            return "CHARACTER"
+
+    def get_range_name(self, status):
+        for afd_range in self.afd_ranges:
+            if status in range(afd_range[1]["start"],afd_range[1]["end"]):
+                return afd_range[0]
+                
 
     def init_transition_matrix(self):
         matrix = {}
-        errors = []
-        error_code = 0
-        # Get all rows
-        columns = set()
+        options = set()
         for status in self.afd:
             for transition in self.afd[status]:
                 if status not in matrix:
                     matrix[status] = []
+                if "STATUS_" + str(transition["target"]) not in matrix:
+                    matrix["STATUS_" + str(transition["target"])] = []
                 if [transition["char"]] not in matrix[status]:
-                    matrix[status].append([transition["char"]])
-                columns.add(transition["char"])
-        print(matrix)
+                    matrix[status].append((transition["char"],transition["target"], self.get_range_name(transition["target"])))
+                options.add(transition["char"])
+             
+        error_code = 1
+        for status in matrix:
+            for option in options:
+                is_error = [item for item in matrix[status] if self.is_char(option) in item] == []
+                if is_error:
+                    matrix[status].append(('ERR', self.is_char(option), error_code, self.get_range_name(transition["target"])))
+                    error_code = error_code + 1
+        self.pp.pprint(matrix)
+                    
 
     def handle_column(self, c):
         if len(c) == 0:
@@ -201,7 +221,7 @@ class Lexico:
             if transition["tot"] == "LINE COMMENT":
                 # Remove \n in line comment
                 self.content = self.content[:-1]
-            print("Comment: No way. I can't generate a token with \n{0}\n".format(self.content))
+            #print("Comment: No way. I can't generate a token with \n{0}\n".format(self.content))
         else:
             self.generate_token(transition)
 
@@ -210,12 +230,11 @@ class Lexico:
         return 1
 
     def __init__(self, path):
-        print(self.afd_ranges)
         self.init_transition_matrix()
         with open(path) as f:
             while True:
                 c = f.read(1)
                 if len(c) == 0 or self.handle_char(c) == 0:
                     break
-            print(self.tokens)
+            #print(self.tokens)
             f.close()
