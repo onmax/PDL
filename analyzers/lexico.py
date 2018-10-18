@@ -11,8 +11,6 @@ class Lexico:
 
     delimiters = [ord(' '), ord('\n')]
 
-    comment_status = [8, 15, 16]
-
     # TO DO: Add states of string like comment
     string_status = []
 
@@ -24,14 +22,21 @@ class Lexico:
 
     #
     #   RANGE AFD
+    #       undefined: > 1000:
+    #           1001: Starts with / and it can be division or comment
+    #
     #       single-character: 1-50
     #       double-character: 51-100
+    #
     #       Number: 101-200
-    #           Integer: 101-110
+    #           Integer: 101-105
+    #
     #       Identyfying: 201-300
+    #
     #       String: 301-400
     #           With ": 301-310
     #           With ': 311-320
+    #
     #       Comments: 401-500
     #          Line: 401-410
     #          Block: 411-520
@@ -43,56 +48,74 @@ class Lexico:
             {"target": 2, "char": ")", "tot": "OP_CLOSEPARENTHESIS"},
             {"target": 3, "char": "{", "tot": "OP_OPENBRACKET"},
             {"target": 4, "char": "}", "tot": "OP_CLOSEBRACKET"},
-            {"target": 31, "char": "+", "tot": None},
-            {"target": 32, "char": "&", "tot": None},
-            {"target": 33, "char": "=", "tot": None},
-            {"target": 8, "char": "/", "tot": None},
-            {"target": 9, "char": "LETTER", "tot": None},
-            {"target": 10, "char": "DIGIT", "tot": None},
+            {"target": 51, "char": "+", "tot": None},
+            {"target": 52, "char": "&", "tot": None},
+            {"target": 53, "char": "=", "tot": None},
+            {"target": 1001, "char": "/", "tot": None},
+            {"target": 201, "char": "LETTER", "tot": None},
+            {"target": 101, "char": "DIGIT", "tot": None},
         ],
-        "STATUS_31": [
-            {"target": 11, "char": "+", "tot": "OP_DOUBLEPLUS"},
-            {"target": 12, "char": "DELIMITER", "tot": "OP_PLUS"}
+        "STATUS_51": [
+            {"target": 54, "char": "+", "tot": "OP_DOUBLEPLUS"},
+            {"target": 55, "char": "DELIMITER", "tot": "OP_PLUS"}
         ],
-        "STATUS_32": [
-            {"target": 13, "char": "&", "tot": "OP_ANDAND"},
+        "STATUS_52": [
+            {"target": 56, "char": "&", "tot": "OP_ANDAND"},
         ],
-        "STATUS_33": [
-            {"target": 14, "char": "=", "tot": "OP_DOUBLEEQUAL"},
+        "STATUS_53": [
+            {"target": 57, "char": "=", "tot": "OP_DOUBLEEQUAL"},
         ],
-
-
-
-        # Comment
-        "STATUS_8": [
-            {"target": 15, "char": "*", "tot": None},
-        ],
-        "STATUS_15": [
-            {"target": 16, "char": "*", "tot": None},
-            {"target": 15, "char": "O.C.", "tot": None},
-        ],
-        "STATUS_16": [
-            {"target": 17, "char": "/", "tot": "COMMENT"},
-            {"target": 15, "char": "DELIMITER", "tot": None},
-        ],
-        # End of comment
-
+        
 
 
         # identifying
-        "STATUS_9": [
-            {"target": 9, "char": "LETTER", "tot": None},
-            {"target": 9, "char": "DIGIT", "tot": None},
-            {"target": 9, "char": "_", "tot": None},
-            {"target": 17, "char": "DELIMITER", "tot": "IDENTIFYING"},
+        "STATUS_201": [
+            {"target": 201, "char": "LETTER", "tot": None},
+            {"target": 201, "char": "DIGIT", "tot": None},
+            {"target": 201, "char": "_", "tot": None},
+            {"target": 202, "char": "DELIMITER", "tot": "IDENTIFYING"},
         ],
 
         # number
-        "STATUS_10": [
-            {"target": 10, "char": "DIGIT", "tot": None},
-            {"target": 15, "char": "DELIMITER", "tot": "INTEGER"}
-        ]
+        "STATUS_101": [
+            {"target": 101, "char": "DIGIT", "tot": None},
+            {"target": 102, "char": "DELIMITER", "tot": "INTEGER"}
+        ],
+
+
+
+         # /
+        "STATUS_1001": [
+            {"target": 5, "char": "DELIMITER", "tot": "OP_DIVISION"},
+            {"target": 401, "char": "/", "tot": None}, # Single line comment
+            {"target": 411, "char": "*", "tot": None}, # Block comment
+        ],
+
+
+        # Line comment
+        "STATUS_401": [
+            {"target": 401, "char": "\n", "tot": "LINE COMMENT"},
+            {"target": 401, "char": "O.C.", "tot": None},
+        ],
+        # End of line comment
+
+
+
+        # Block comment
+        "STATUS_411": [
+            {"target": 412, "char": "*", "tot": None},
+            {"target": 411, "char": "O.C.", "tot": None},
+        ],
+        "STATUS_412": [
+            {"target": 413, "char": "/", "tot": "BLOCK COMMENT"},
+            {"target": 411, "char": "DELIMITER", "tot": None},
+        ],
+        # End of block comment
     }
+
+    def init_transition_matrix(self):
+        errors = []
+        error_code = 0
 
     def handle_column(self, c):
         if len(c) == 0:
@@ -143,7 +166,7 @@ class Lexico:
 
         # If the afd must to read O.C or DELIMITER then we don't concatenate delimiters with exception of comment and string
         if (transition["char"] != "O.C." or transition["char"] != "DELIMITER") and ord(c) in self.delimiters:
-            if self.status in self.comment_status or self.status in self.string_status:
+            if self.status > 300 and self.status <= 500:
                 self.content = self.content + c
         else:
             self.content = self.content + c
@@ -156,8 +179,11 @@ class Lexico:
         # We generate token with the exception of identifying
         if transition["tot"] == 'IDENTIFYING' and self.already_in_symbol_table(self.content):
             print("variable o PR ya existe")
-        elif transition["tot"] == "COMMENT":
-            print("Comment: No way. I can't generate a token with " + self.content)
+        elif transition["tot"] in ["LINE COMMENT", "BLOCK COMMENT"]:
+            if transition["tot"] == "LINE COMMENT":
+                # Remove \n in line comment
+                self.content = self.content[:-1]
+            print("Comment: No way. I can't generate a token with \n{0}\n".format(self.content))
         else:
             self.generate_token(transition)
 
@@ -166,6 +192,7 @@ class Lexico:
         return 1
 
     def __init__(self, path):
+        self.init_transition_matrix()
         with open(path) as f:
             while True:
                 c = f.read(1)
