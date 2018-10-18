@@ -21,6 +21,21 @@ class Lexico:
     status = 0
     content = ""
 
+
+    #
+    #   RANGE AFD
+    #       single-character: 1-50
+    #       double-character: 51-100
+    #       Number: 101-200
+    #           Integer: 101-110
+    #       Identyfying: 201-300
+    #       String: 301-400
+    #           With ": 301-310
+    #           With ': 311-320
+    #       Comments: 401-500
+    #          Line: 401-410
+    #          Block: 411-520
+    #
     afd = {
         "STATUS_0": [
             {"target": 0, "char": "DELIMITER", "tot": None},
@@ -28,21 +43,21 @@ class Lexico:
             {"target": 2, "char": ")", "tot": "OP_CLOSEPARENTHESIS"},
             {"target": 3, "char": "{", "tot": "OP_OPENBRACKET"},
             {"target": 4, "char": "}", "tot": "OP_CLOSEBRACKET"},
-            {"target": 5, "char": "+", "tot": None},
-            {"target": 6, "char": "&", "tot": None},
-            {"target": 7, "char": "=", "tot": None},
+            {"target": 31, "char": "+", "tot": None},
+            {"target": 32, "char": "&", "tot": None},
+            {"target": 33, "char": "=", "tot": None},
             {"target": 8, "char": "/", "tot": None},
             {"target": 9, "char": "LETTER", "tot": None},
             {"target": 10, "char": "DIGIT", "tot": None},
         ],
-        "STATUS_5": [
+        "STATUS_31": [
             {"target": 11, "char": "+", "tot": "OP_DOUBLEPLUS"},
             {"target": 12, "char": "DELIMITER", "tot": "OP_PLUS"}
         ],
-        "STATUS_6": [
+        "STATUS_32": [
             {"target": 13, "char": "&", "tot": "OP_ANDAND"},
         ],
-        "STATUS_7": [
+        "STATUS_33": [
             {"target": 14, "char": "=", "tot": "OP_DOUBLEEQUAL"},
         ],
 
