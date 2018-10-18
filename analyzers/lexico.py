@@ -11,14 +11,12 @@ class Lexico:
 
     delimiters = [ord(' '), ord('\n')]
 
-    # TO DO: Add states of string like comment
-    string_status = []
-
     tokens = []
 
     status = 0
     content = ""
 
+    afd_ranges = []
 
     #
     #   RANGE AFD
@@ -27,19 +25,24 @@ class Lexico:
     #
     #       single-character: 1-50
     #       double-character: 51-100
+    afd_ranges.append(('character', range(1, 100)))
     #
     #       Number: 101-200
     #           Integer: 101-105
+    afd_ranges.append(('integer', range(101, 105)))
     #
     #       Identyfying: 201-300
+    afd_ranges.append(('identyfying', range(201, 300)))
     #
     #       String: 301-400
     #           With ": 301-310
     #           With ': 311-320
+    afd_ranges.append(('string', range(301, 320)))
     #
     #       Comments: 401-500
     #          Line: 401-410
-    #          Block: 411-520
+    #          Block: 411-420
+    afd_ranges.append(('comment', range(401, 420)))
     #
     afd = {
         "STATUS_0": [
@@ -65,7 +68,7 @@ class Lexico:
         "STATUS_53": [
             {"target": 57, "char": "=", "tot": "OP_DOUBLEEQUAL"},
         ],
-        
+
 
 
         # identifying
@@ -113,16 +116,24 @@ class Lexico:
         # End of block comment
     }
 
+
+    def getRangeName(self):
+        pass
+
     def init_transition_matrix(self):
+        matrix = {}
         errors = []
         error_code = 0
         # Get all rows
-        rows = set()
+        columns = set()
         for status in self.afd:
             for transition in self.afd[status]:
-                rows.add(transition["target"])
-        rows = sorted(rows)
-        print(rows)
+                if status not in matrix:
+                    matrix[status] = []
+                if [transition["char"]] not in matrix[status]:
+                    matrix[status].append([transition["char"]])
+                columns.add(transition["char"])
+        print(matrix)
 
     def handle_column(self, c):
         if len(c) == 0:
@@ -199,6 +210,7 @@ class Lexico:
         return 1
 
     def __init__(self, path):
+        print(self.afd_ranges)
         self.init_transition_matrix()
         with open(path) as f:
             while True:
