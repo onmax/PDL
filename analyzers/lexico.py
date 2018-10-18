@@ -116,6 +116,13 @@ class Lexico:
     def init_transition_matrix(self):
         errors = []
         error_code = 0
+        # Get all rows
+        rows = set()
+        for status in self.afd:
+            for transition in self.afd[status]:
+                rows.add(transition["target"])
+        rows = sorted(rows)
+        print(rows)
 
     def handle_column(self, c):
         if len(c) == 0:
