@@ -231,7 +231,7 @@ class Lexico:
         # We generate token with the exception of identifying
         if transition["tot"] == 'IDENTIFYING' and self.already_in_symbol_table(self.content):
             print("variable o PR ya existe")
-        elif transition["tot"] in ["LINE COMMENT", "BLOCK COMMENT"]:
+        elif transition["tot"] in ["LINE COMMENT", "BLOCK COMMENT", "STRING"]:
             if transition["tot"] == "LINE COMMENT":
                 # Remove \n in line comment
                 self.content = self.content[:-1]
