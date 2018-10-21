@@ -252,7 +252,7 @@ class Lexico:
                 if len(c) == 0 or self.handle_char(c) == 0:
                     break
         print('Generated ' + colored('{0} tokens',
-                                     'grey', 'on_green').format(len(self.tokens)))
+                                   'grey', 'on_green').format(len(self.tokens)))
         with open("./res/lexico/tokens_generated.txt", "w") as fout:
             fout.write(pprint.pformat(self.tokens))
 

@@ -6,7 +6,7 @@ Y estaré aquí de por vida
 comentario */
 
 + j
-
+" Esto debería generar dos errors"
 // Comentario en linea, da igual lo que ponga aqui
 /**/
 

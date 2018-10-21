@@ -10,4 +10,8 @@
  ('IDENTIFYING', 'sdfkjas'),
  ('IDENTIFYING', 'df'),
  ('OP_PLUS', '+'),
- ('IDENTIFYING', 'j')]
+ ('IDENTIFYING', 'j'),
+ ('IDENTIFYING', 'Esto'),
+ ('IDENTIFYING', 'a'),
+ ('IDENTIFYING', 'generar'),
+ ('IDENTIFYING', 'dos')]
