@@ -239,5 +239,5 @@ class Lexico:
                 c = f.read(1)
                 if len(c) == 0 or self.handle_char(c) == 0:
                     break
-            # print(self.tokens)
-            f.close()
+        with open("./res/tokens_generated.txt", "w") as fout:
+            fout.write(pprint.pformat(self.tokens))
