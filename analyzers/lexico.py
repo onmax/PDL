@@ -130,6 +130,7 @@ class Lexico:
             return "CHARACTER"
 
     def get_range_name(self, status):
+        status = int(status.split('_')[1])
         for afd_range in self.afd_ranges:
             if status in range(afd_range[1]["start"], afd_range[1]["end"]):
                 return afd_range[0]
@@ -145,17 +146,17 @@ class Lexico:
                     matrix["STATUS_" + str(transition["target"])] = []
                 if [transition["char"]] not in matrix[status]:
                     matrix[status].append(
-                        (transition["char"], transition["target"]))
+                        (transition["char"], transition["target"], self.get_range_name(status)))
                 options.add(transition["char"])
 
         error_code = 1
-        for option in options:
-            for status in matrix:
+        for status in matrix:
+            for option in options:
                 is_error = [item for item in matrix[status]
                             if option in item] == []
                 if is_error:
                     matrix[status].append(
-                        ('ERR', option, error_code))
+                        ('ERR', option, error_code, self.get_range_name(status)))
                     error_code = error_code + 1
         with open("./res/lexico/transition_matrix.txt", "w") as fout:
             fout.write(pprint.pformat(matrix))
