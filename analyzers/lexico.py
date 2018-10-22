@@ -14,6 +14,8 @@ class Lexico:
 
     delimiters = [ord(' '), ord('\n'), ord('\t')]
 
+    ids = []
+    
     tokens = []
 
     status = 0
@@ -195,8 +197,14 @@ class Lexico:
         self.errors.append(
             {"line": self.line, "line_content": self.line_content, "status": self.status, "char_readed": c})
 
+    def add_id(self, id):
+        self.ids.append(id)    
+        
     def already_in_symbol_table(self, id):
-        return False
+        if id in ids:
+            return True
+        else:
+            return False
 
     def generate_token(self, transition):
         self.tokens.append((transition["tot"], self.content))
