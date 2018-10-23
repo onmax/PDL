@@ -63,6 +63,7 @@ class Lexico:
             {"target": 51, "char": "+", "tot": None},
             {"target": 52, "char": "&", "tot": None},
             {"target": 53, "char": "=", "tot": None},
+            {"target": 301, "char": "\"", "tot": None},
             {"target": 1001, "char": "/", "tot": None},
             {"target": 201, "char": "LETTER", "tot": None},
             {"target": 101, "char": "DIGIT", "tot": None},
@@ -110,6 +111,18 @@ class Lexico:
             {"target": 401, "char": "O.C.", "tot": None},
         ],
         # End of line comment
+
+
+        # String
+        "STATUS_301": [
+            {"target": 302, "char": "\"", "tot": "STRING_\""},
+            {"target": 303, "char": "\"", "tot": None},
+            {"target": 301, "char": "O.C.", "tot": None}
+        ],
+
+        "STATUS_303": [
+            {"target": 301, "char": "O.C.", "tot": None}
+        ],
 
 
 
@@ -207,6 +220,12 @@ class Lexico:
             return False
 
     def generate_token(self, transition):
+        if transition["target"] in range(101,200):
+            # Convert to integer if content is a integer
+            self.content = int(self.content)
+        elif transition["target"] in range(301,400):
+            # Remove " in a string
+            self.content = self.content[1:-1]        
         self.tokens.append((transition["tot"], self.content))
 
     def initialize_variables(self):

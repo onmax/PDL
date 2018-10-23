@@ -1,14 +1,1 @@
-&& d2ksfj234 klfjsadkj 1234 jd9f dsfa ++
-adsflj dfasdflka
-sdfkjas df
-/* Soy un
-Y estaré aquí de por vida
-comentario */
-
-+ j
-" Esto debería generar dos errors"
-// Comentario en linea, da igual lo que ponga aqui
-/**/
-
-
-
+"Hola "

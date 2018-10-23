@@ -1,17 +1,1 @@
-[('OP_ANDAND', '&&'),
- ('IDENTIFYING', 'd2ksfj234'),
- ('IDENTIFYING', 'klfjsadkj'),
- ('INTEGER', '1234'),
- ('IDENTIFYING', 'jd9f'),
- ('IDENTIFYING', 'dsfa'),
- ('OP_DOUBLEPLUS', '++'),
- ('IDENTIFYING', 'adsflj'),
- ('IDENTIFYING', 'dfasdflka'),
- ('IDENTIFYING', 'sdfkjas'),
- ('IDENTIFYING', 'df'),
- ('OP_PLUS', '+'),
- ('IDENTIFYING', 'j'),
- ('IDENTIFYING', 'Esto'),
- ('IDENTIFYING', 'a'),
- ('IDENTIFYING', 'generar'),
- ('IDENTIFYING', 'dos')]
+[('STRING_"', 'Hola ')]

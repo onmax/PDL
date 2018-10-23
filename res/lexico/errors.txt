@@ -1,9 +1,1 @@
-[{'char_readed': '"', 'line': 9, 'line_content': '"', 'status': 0},
- {'char_readed': '\xad',
-  'line': 9,
-  'line_content': '" Esto deberÃ\xad',
-  'status': 201},
- {'char_readed': '"',
-  'line': 9,
-  'line_content': '" Esto deberÃ\xada generar dos errors"',
-  'status': 201}]
+'No errors founded in AL'
