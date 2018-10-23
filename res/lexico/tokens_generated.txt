@@ -1,1 +1,10 @@
-[('STRING_"', 'Hola ')]
+[('OP_OPENPARENTHESIS', '('),
+ ('OP_CLOSEPARENTHESIS', ')'),
+ ('OP_OPENBRACKET', '{'),
+ ('OP_OPENPARENTHESIS', '('),
+ ('STRING_"', 'HOLA'),
+ ('OP_CLOSEPARENTHESIS', ')'),
+ ('IDENTIFYING', 'a'),
+ ('OP_EQUAL', '='),
+ ('STRING_"', 'Jpa'),
+ ('OP_CLOSEBRACKET', '}')]

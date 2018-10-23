@@ -32,4 +32,5 @@
  'STATUS_51': [{'char': '+', 'target': 54, 'tot': 'OP_DOUBLEPLUS'},
                {'char': 'DELIMITER', 'target': 55, 'tot': 'OP_PLUS'}],
  'STATUS_52': [{'char': '&', 'target': 56, 'tot': 'OP_ANDAND'}],
- 'STATUS_53': [{'char': '=', 'target': 57, 'tot': 'OP_DOUBLEEQUAL'}]}
+ 'STATUS_53': [{'char': 'O.C.', 'target': 58, 'tot': 'OP_EQUAL'},
+               {'char': '=', 'target': 57, 'tot': 'OP_DOUBLEEQUAL'}]}

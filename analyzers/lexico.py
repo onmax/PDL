@@ -15,6 +15,8 @@ class Lexico:
     delimiters = [ord(' '), ord('\n'), ord('\t')]
 
     ids = []
+
+    reservated = ["if", "else", "function", "while", "for", "var", "print", "prompt", "true", "false"]
     
     tokens = []
 
@@ -76,6 +78,7 @@ class Lexico:
             {"target": 56, "char": "&", "tot": "OP_ANDAND"},
         ],
         "STATUS_53": [
+            {"target": 58, "char": "O.C.", "tot": "OP_EQUAL"},
             {"target": 57, "char": "=", "tot": "OP_DOUBLEEQUAL"},
         ],
 
@@ -209,14 +212,12 @@ class Lexico:
     def add_error(self, c):
         self.errors.append(
             {"line": self.line, "line_content": self.line_content, "status": self.status, "char_readed": c})
-
-    def add_id(self, id):
-        self.ids.append(id)    
         
-    def already_in_symbol_table(self, id):
-        if id in ids:
+    def already_in_symbol_table(self, _id):
+        if _id in self.ids:
             return True
         else:
+            self.ids.append(_id)
             return False
 
     def generate_token(self, transition):
@@ -257,8 +258,8 @@ class Lexico:
             return 1
 
         # We generate token with the exception of identifying
-        if transition["tot"] == 'IDENTIFYING' and self.already_in_symbol_table(self.content):
-            print("variable o PR ya existe")
+        if transition["tot"] == 'IDENTIFYING' and (self.already_in_symbol_table(self.content) or self.content in self.reservated):
+            print("variable o PR ya existe: {0}".format(self.content))
         elif transition["tot"] in ["LINE COMMENT", "BLOCK COMMENT", "STRING"]:
             if transition["tot"] == "LINE COMMENT":
                 # Remove \n in line comment
