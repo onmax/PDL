@@ -1,5 +1,5 @@
 if ( true ) {
     print ("HOLA")
-    var a = "Jpa"
+    var a= "Jpa"
     a
 }

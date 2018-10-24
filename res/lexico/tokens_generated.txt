@@ -4,7 +4,7 @@
  ('OP_OPENPARENTHESIS', '('),
  ('STRING_"', 'HOLA'),
  ('OP_CLOSEPARENTHESIS', ')'),
- ('IDENTIFYING', 'a'),
- ('OP_EQUAL', '='),
+ ('IDENTIFYING', '='),
  ('STRING_"', 'Jpa'),
+ ('IDENTIFYING', 'a'),
  ('OP_CLOSEBRACKET', '}')]

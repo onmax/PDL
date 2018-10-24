@@ -89,7 +89,7 @@ class Lexico:
             {"target": 201, "char": "LETTER", "tot": None},
             {"target": 201, "char": "DIGIT", "tot": None},
             {"target": 201, "char": "_", "tot": None},
-            {"target": 202, "char": "DELIMITER", "tot": "IDENTIFYING"},
+            {"target": 202, "char": "O.C.", "tot": "IDENTIFYING"},
         ],
 
         # number
@@ -212,7 +212,7 @@ class Lexico:
     def add_error(self, c):
         self.errors.append(
             {"line": self.line, "line_content": self.line_content, "status": self.status, "char_readed": c})
-        
+
     def already_in_symbol_table(self, _id):
         if _id in self.ids:
             return True
@@ -226,7 +226,7 @@ class Lexico:
             self.content = int(self.content)
         elif transition["target"] in range(301,400):
             # Remove " in a string
-            self.content = self.content[1:-1]        
+            self.content = self.content[1:-1]
         self.tokens.append((transition["tot"], self.content))
 
     def initialize_variables(self):
@@ -257,6 +257,7 @@ class Lexico:
             self.status = transition["target"]
             return 1
 
+
         # We generate token with the exception of identifying
         if transition["tot"] == 'IDENTIFYING' and (self.already_in_symbol_table(self.content) or self.content in self.reservated):
             print("variable o PR ya existe: {0}".format(self.content))
@@ -265,6 +266,11 @@ class Lexico:
                 # Remove \n in line comment
                 self.content = self.content[:-1]
             # print("Comment: No way. I can't generate a token with \n{0}\n".format(self.content))
+        elif transition["char"] == 'O.C.':
+            self.content = self.content[-1]
+            self.generate_token(transition)
+            self.initialize_variables()
+            self.handle_char(c)
         else:
             self.generate_token(transition)
 

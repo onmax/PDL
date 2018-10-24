@@ -18,7 +18,7 @@
  'STATUS_201': [{'char': 'LETTER', 'target': 201, 'tot': None},
                 {'char': 'DIGIT', 'target': 201, 'tot': None},
                 {'char': '_', 'target': 201, 'tot': None},
-                {'char': 'DELIMITER', 'target': 202, 'tot': 'IDENTIFYING'}],
+                {'char': 'O.C.', 'target': 202, 'tot': 'IDENTIFYING'}],
  'STATUS_301': [{'char': '"', 'target': 302, 'tot': 'STRING_"'},
                 {'char': '"', 'target': 303, 'tot': None},
                 {'char': 'O.C.', 'target': 301, 'tot': None}],
