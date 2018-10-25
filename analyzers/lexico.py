@@ -91,7 +91,7 @@ class Lexico:
             {"target": 201, "char": "LETTER", "tot": None},
             {"target": 201, "char": "DIGIT", "tot": None},
             {"target": 201, "char": "_", "tot": None},
-            {"target": 202, "char": "O.C.", "tot": "IDENTIFYING"},
+            {"target": 202, "char": "O.C.", "tot": "IDENTIFIER"},
         ],
 
         # number
@@ -260,7 +260,7 @@ class Lexico:
             return 1
 
         # Add to ids array the new word if not already in the array nor in the array of reservate_words
-        if transition["tot"] == 'IDENTIFYING' and self.content not in self.ids and self.content not in self.reservated_words:
+        if transition["tot"] == 'IDENTIFIER' and self.content not in self.ids and self.content not in self.reservated_words:
             self.ids.append(self.content)
 
         if transition["tot"] in ["LINE_COMMENT", "BLOCK_COMMENT", "STRING"]:
