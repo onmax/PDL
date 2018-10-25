@@ -1,10 +1,5 @@
-[('OP_OPENPARENTHESIS', '('),
- ('OP_CLOSEPARENTHESIS', ')'),
- ('OP_OPENBRACKET', '{'),
- ('OP_OPENPARENTHESIS', '('),
- ('STRING_"', 'HOLA'),
- ('OP_CLOSEPARENTHESIS', ')'),
- ('IDENTIFYING', '='),
- ('STRING_"', 'Jpa'),
- ('IDENTIFYING', 'a'),
- ('OP_CLOSEBRACKET', '}')]
+[('IDENTIFYING', 'va'),
+ ('INTEGER', '1'),
+ ('IDENTIFYING', 'va'),
+ ('INTEGER', '1'),
+ ('IDENTIFYING', 'va')]

@@ -1,5 +1,3 @@
-if ( true ) {
-    print ("HOLA")
-    var a= "Jpa"
-    a
-}
+var a = 10
+var b = 11
+var c = a + b
