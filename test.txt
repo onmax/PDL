@@ -1,5 +1,2 @@
-function multiplicar ( ) {
-    var a1 = 10 ;
-    var multiplo_2 = 14 ;
-    !print ( a1 * multiplo_2 ) ;
-}
+var a=10;
+a"ila"

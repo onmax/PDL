@@ -143,12 +143,6 @@ class Lexico:
         # End of BLOCK_COMMENT
     }
 
-    def is_char(self, c):
-        if c in ["DELIMITER", "DIGIT", "LETTER"]:
-            return c
-        else:
-            return "CHARACTER"
-
     def get_range_name(self, status):
         status = int(status.split('_')[1])
         for afd_range in self.afd_ranges:
@@ -247,12 +241,20 @@ class Lexico:
             self.initialize_variables()
             return 1
 
+        if transition["char"] == "O.C." and transition["tot"] != None:
+            self.generate_token(transition)
+            self.initialize_variables()
+            self.handle_char(c)
+            return 1
+
         # If the afd must to read O.C or DELIMITER then we don't concatenate delimiters with exception of comment and string
         if (transition["char"] != "O.C." or transition["char"] != "DELIMITER") and ord(c) in self.delimiters:
             if self.status > 300 and self.status <= 500:
                 self.content = self.content + c
         else:
             self.content = self.content + c
+
+        self.old_transition = transition
 
         # if tot is None, then we go to the next status
         if transition["tot"] == None:
@@ -301,4 +303,3 @@ class Lexico:
                     error["line"], error["line_content"], error["status"], error["char_readed"])
             with open("./res/lexico/errors.txt", "w") as fout:
                 fout.write(pprint.pformat(self.errors))
-        print(self.ids)

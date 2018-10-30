@@ -1,5 +1,1 @@
-[{'char_readed': '!', 'line': 4, 'line_content': '    !', 'status': 0},
- {'char_readed': '*',
-  'line': 4,
-  'line_content': '    !print ( a1 *',
-  'status': 0}]
+'No errors founded in AL'
