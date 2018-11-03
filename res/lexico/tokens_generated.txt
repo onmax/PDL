@@ -2,4 +2,5 @@
  ('INTEGER', '1'),
  ('IDENTIFYING', 'va'),
  ('INTEGER', '1'),
- ('IDENTIFYING', 'va')]
+ ('IDENTIFYING', 'va'),
+ ('EOF', '-')]

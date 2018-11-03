@@ -294,6 +294,7 @@ class Lexico:
                 c = f.read(1)
                 if len(c) == 0 or self.handle_char(c) == 0:
                     break
+        self.tokens.append(('EOF', '-'))
         print('Generated ' + colored('{0} tokens',
                                      'grey', 'on_green').format(len(self.tokens)))
         with open("./res/lexico/tokens_generated.txt", "w") as fout:
