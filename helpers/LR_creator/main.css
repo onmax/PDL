@@ -1,0 +1,65 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    background: #0E3B43;
+    font-family: 'Open Sans', sans-serif;
+}
+
+h2 {
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 20px;
+    color: #A3BBAD;
+}
+
+.input-area,
+.status {
+    background: #fff;
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 40px;
+    border-radius: 10px;
+}
+
+.status>div {
+    margin: 30px 0;
+}
+
+.input-area textarea {
+    width: 80%;
+    border: 3px solid #357266;
+}
+
+
+.status>div {
+    display: flex;
+    align-items: center;
+}
+
+
+.status-box,
+.big-box {
+    padding: 10px 15px;
+    border: 3px solid #111;
+}
+
+.big-box {
+    display: flex;
+    flex-direction: column;
+    margin-right: 20%;
+    border-radius: 10px;
+}
+
+.status-box {
+    height: 45px;
+    width: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin: 0 auto;
+}

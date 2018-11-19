@@ -12,12 +12,12 @@ class Lexico:
     line = 1
     line_content = ''
 
-    delimiters = [ord(' '), ord('\n'), ord('\t')]
+    delimiters = [ord(' '), ord('\n'), ord('\t'), ord(';')]
 
     ids = []
 
     reservated_words = ["if", "else", "function", "while",
-                        "for", "var", "print", "prompt", "true", "false", "return"]
+                        "for", "var", "print", "prompt", "true", "false"]
 
     tokens = []
 
@@ -59,11 +59,10 @@ class Lexico:
     afd = {
         "STATUS_0": [
             {"target": 0, "char": "DELIMITER", "tot": None},
-            {"target": 1, "char": ";", "tot": "CHAR"},
-            {"target": 2, "char": "(", "tot": "CHAR"},
-            {"target": 3, "char": ")", "tot": "CHAR"},
-            {"target": 4, "char": "{", "tot": "CHAR"},
-            {"target": 5, "char": "}", "tot": "CHAR"},
+            {"target": 1, "char": "(", "tot": "CHAR"},
+            {"target": 2, "char": ")", "tot": "CHAR"},
+            {"target": 3, "char": "{", "tot": "CHAR"},
+            {"target": 4, "char": "}", "tot": "CHAR"},
             {"target": 51, "char": "+", "tot": None},
             {"target": 52, "char": "&", "tot": None},
             {"target": 53, "char": "=", "tot": None},
@@ -91,13 +90,13 @@ class Lexico:
             {"target": 201, "char": "LETTER", "tot": None},
             {"target": 201, "char": "DIGIT", "tot": None},
             {"target": 201, "char": "_", "tot": None},
-            {"target": 202, "char": "O.C.", "tot": "IDENTIFIER"},
+            {"target": 0, "char": "O.C.", "tot": "IDENTIFYING"},
         ],
 
         # number
         "STATUS_101": [
             {"target": 101, "char": "DIGIT", "tot": None},
-            {"target": 102, "char": "O.C.", "tot": "INTEGER"}
+            {"target": 0, "char": "O.C.", "tot": "INTEGER"}
         ],
 
 
@@ -142,6 +141,12 @@ class Lexico:
         ],
         # End of BLOCK_COMMENT
     }
+
+    def is_char(self, c):
+        if c in ["DELIMITER", "DIGIT", "LETTER"]:
+            return c
+        else:
+            return "CHARACTER"
 
     def get_range_name(self, status):
         status = int(status.split('_')[1])
@@ -216,8 +221,7 @@ class Lexico:
             tot = transition["tot"]
         if transition["target"] in range(101, 200):
             # Convert to integer if content is a integer
-            # self.content = int(self.content)
-            pass
+            self.content = int(self.content)
         elif transition["target"] in range(301, 400):
             # Remove " in a string
             self.content = self.content[1:-1]
@@ -241,12 +245,6 @@ class Lexico:
             self.initialize_variables()
             return 1
 
-        if transition["char"] == "O.C." and transition["tot"] != None:
-            self.generate_token(transition)
-            self.initialize_variables()
-            self.handle_char(c)
-            return 1
-
         # If the afd must to read O.C or DELIMITER then we don't concatenate delimiters with exception of comment and string
         if (transition["char"] != "O.C." or transition["char"] != "DELIMITER") and ord(c) in self.delimiters:
             if self.status > 300 and self.status <= 500:
@@ -254,27 +252,35 @@ class Lexico:
         else:
             self.content = self.content + c
 
-        self.old_transition = transition
-
         # if tot is None, then we go to the next status
         if transition["tot"] == None:
             self.status = transition["target"]
             return 1
 
+        if c == '9':
+            print(self.content)
+
         # Add to ids array the new word if not already in the array nor in the array of reservate_words
-        if transition["tot"] == 'IDENTIFIER' and self.content not in self.ids and self.content not in self.reservated_words:
+        if transition["tot"] == 'IDENTIFYING' and self.content not in self.ids and self.content not in self.reservated_words:
             self.ids.append(self.content)
 
-        if transition["tot"] in ["LINE_COMMENT", "BLOCK_COMMENT", "STRING"]:
+        elif transition["tot"] in ["LINE_COMMENT", "BLOCK_COMMENT", "STRING"]:
             if transition["tot"] == "LINE_COMMENT":
                 # Remove \n in LINE_COMMENT
                 self.content = self.content[:-1]
             # print("Comment: No way. I can't generate a token with \n{0}\n".format(self.content))
+        elif transition["char"] == 'O.C.' and transition["target"] == 0:
+            self.content = self.content[:-1]
+            self.generate_token(transition)
+            self.content = ''
+            self.status = 0
+            self.handle_char(c)
+            return 1
         else:
             if self.content in self.reservated_words:
                 self.generate_token(transition, True)
-            else:
-                self.generate_token(transition)
+
+            self.generate_token(transition)
 
         self.initialize_variables()
         return 1
