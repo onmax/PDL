@@ -1,6 +1,6 @@
 var int ab=10;
 ab = "aaa";
-function string feo(){
+function string feo(int num, bool b, string str){
     print("AAA");
 var bool b = true;
 }

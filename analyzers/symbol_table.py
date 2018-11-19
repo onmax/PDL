@@ -32,17 +32,30 @@ class Symbol_Table:
         self.tables[current_table].append(row)
 
     def separate_tokens(self):
-        id = 1
-        displacement = 0
-        self.tables['global'] = []
+        id = {'global':1}
+        displacement = {'global':0}
         current_table = 'global'
+        self.tables[current_table] = []
         end_arg = False
+        start_arg = False
+        type_param = []
         brackets_counter = 0
         for i,token in enumerate(lex.tokens):
             if current_table != 'global':
+                if start_arg:
+                    if token[1] in ['int', 'bool', 'string']:
+                        type_param.append(lex.tokens[i][1])
+                        self.add_var(id[current_table], lex.tokens[i][1], lex.tokens[i + 1][1], displacement[current_table], current_table)
+                        id[current_table] += 1
+                        displacement[current_table] += self.get_displacement(lex.tokens[i][1])
+                if token[1] == '(':
+                    start_arg = True
                 if token[1] == ')':
+                    self.tables['global'][-1]['type_param'] = type_param
+                    self.tables['global'][-1]['nparam'] = len(type_param)
+                    type_param = []
                     end_arg = True
-                    continue
+                    start_arg = False
                 if token[1] == '{':
                     brackets_counter += 1
                 if token[1] == '}':
@@ -50,15 +63,17 @@ class Symbol_Table:
                 if brackets_counter == 0 and end_arg:
                     current_table = 'global'
             if token[1] == 'var':
-                self.add_var(id, lex.tokens[i + 1][1], lex.tokens[i + 2][1], displacement, current_table)
-                displacement += self.get_displacement(lex.tokens[i + 1][1])
-                id += 1
+                self.add_var(id[current_table], lex.tokens[i + 1][1], lex.tokens[i + 2][1], displacement[current_table], current_table)
+                displacement[current_table] += self.get_displacement(lex.tokens[i + 1][1])
+                id[current_table] += 1
             if token[1] == 'function':
-                self.add_fn(id, lex.tokens[i + 1][1], lex.tokens[i + 2][1], current_table)
+                self.add_fn(id[current_table], lex.tokens[i + 1][1], lex.tokens[i + 2][1], current_table)
+                id[current_table] += 1
                 self.tables[lex.tokens[i + 2][1]] = []
                 current_table = lex.tokens[i + 2][1]
+                displacement[current_table] = 0
                 end_arg = False
-                id += 1
+                id[current_table] = 1
 
 
     def __init__(self):

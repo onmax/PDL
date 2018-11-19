@@ -64,6 +64,7 @@ class Lexico:
             {"target": 3, "char": ")", "tot": "CHAR"},
             {"target": 4, "char": "{", "tot": "CHAR"},
             {"target": 5, "char": "}", "tot": "CHAR"},
+            {"target": 6, "char": ",", "tot": "CHAR"},
             {"target": 51, "char": "+", "tot": None},
             {"target": 52, "char": "&", "tot": None},
             {"target": 53, "char": "=", "tot": None},

@@ -4,6 +4,7 @@
               {'char': ')', 'target': 3, 'tot': 'CHAR'},
               {'char': '{', 'target': 4, 'tot': 'CHAR'},
               {'char': '}', 'target': 5, 'tot': 'CHAR'},
+              {'char': ',', 'target': 6, 'tot': 'CHAR'},
               {'char': '+', 'target': 51, 'tot': None},
               {'char': '&', 'target': 52, 'tot': None},
               {'char': '=', 'target': 53, 'tot': None},
