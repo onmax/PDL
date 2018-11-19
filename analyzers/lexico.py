@@ -217,8 +217,7 @@ class Lexico:
             tot = transition["tot"]
         if transition["target"] in range(101, 200):
             # Convert to integer if content is a integer
-            # self.content = int(self.content)
-            pass
+            self.content = int(self.content)
         elif transition["target"] in range(301, 400):
             # Remove " in a string
             self.content = self.content[1:-1]

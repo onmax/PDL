@@ -2,5 +2,8 @@ var int ab=10;
 ab = "aaa";
 function string feo(int num, bool b, string str){
     print("AAA");
-var bool b = true;
+    var bool b = true;
+    if(bool) { return;}
 }
+
+var int jj;
