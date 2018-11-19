@@ -85,7 +85,6 @@ class Symbol_Table:
     def __init__(self):
         self.tables = {}
         self.separate_tokens()
-
         print('Generated ' + colored('{0} tables of symbols',
                                     'grey', 'on_blue').format(len(self.tables)))
         for table in self.tables:

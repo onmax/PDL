@@ -6,4 +6,10 @@
   'type_param': ['int', 'bool', 'string'],
   'type_ret': 'string'},
  {'displacement': 2, 'id': 3, 'lex': 'b', 'type': 'bool'},
- {'displacement': 3, 'id': 4, 'lex': 'jj', 'type': 'int'}]
+ {'id': 4,
+  'lex': 'a',
+  'mode_param': [],
+  'nparam': 1,
+  'type_param': ['bool'],
+  'type_ret': 'int'},
+ {'displacement': 3, 'id': 5, 'lex': 'jj', 'type': 'int'}]

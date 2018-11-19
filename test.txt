@@ -6,4 +6,6 @@ function string feo(int num, bool b, string str){
     if(bool) { return;}
 }
 
+function int a(bool h){}
+
 var int jj;
