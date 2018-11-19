@@ -1,0 +1,9 @@
+[{'displacement': 0, 'id': 1, 'lex': 'ab', 'type': 'int'},
+ {'id': 2,
+  'lex': 'feo',
+  'mode_param': [],
+  'nparam': 3,
+  'type_param': ['int', 'bool', 'string'],
+  'type_ret': 'string'},
+ {'displacement': 2, 'id': 3, 'lex': 'b', 'type': 'bool'},
+ {'displacement': 3, 'id': 4, 'lex': 'jj', 'type': 'int'}]

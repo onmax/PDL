@@ -1,7 +1,13 @@
+import pprint
+from colorama import init
+from termcolor import colored
+init()
+
 from analyzers.lexico import Lexico as lex
 
 
 class Symbol_Table:
+    pp = pprint.PrettyPrinter(indent=4)
 
     def get_displacement(self, typeid):
         if typeid == 'int':
@@ -79,4 +85,9 @@ class Symbol_Table:
     def __init__(self):
         self.tables = {}
         self.separate_tokens()
-        print(self.tables)
+
+        print('Generated ' + colored('{0} tables of symbols',
+                                    'grey', 'on_blue').format(len(self.tables)))
+        for table in self.tables:
+            with open("./res/symbol_tables/" + table + ".txt" , "w+") as fout:
+                fout.write(pprint.pformat(self.tables[table]))

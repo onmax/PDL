@@ -1,0 +1,3 @@
+[{'displacement': 0, 'id': 1, 'lex': 'num', 'type': 'int'},
+ {'displacement': 2, 'id': 2, 'lex': 'b', 'type': 'bool'},
+ {'displacement': 3, 'id': 3, 'lex': 'str', 'type': 'string'}]
