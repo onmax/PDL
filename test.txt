@@ -1,2 +1,6 @@
-var a=10;
-a"ila"
+var int ab=10;
+ab = "aaa";
+function string feo(){
+    print("AAA");
+var bool b = true;
+}

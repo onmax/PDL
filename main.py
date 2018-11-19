@@ -1,5 +1,6 @@
 import sys
 from analyzers.lexico import Lexico as lex
+from analyzers.symbol_table import Symbol_Table as st
 
 
 if __name__ == '__main__':
@@ -12,3 +13,4 @@ if __name__ == '__main__':
             sys.exit()
         else:
             lex(sys.argv[1])
+            st()

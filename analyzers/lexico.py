@@ -209,9 +209,9 @@ class Lexico:
         self.errors.append(
             {"line": self.line, "line_content": self.line_content, "status": self.status, "char_readed": c})
 
-    def generate_token(self, transition, is_reservated_word=False):
-        if is_reservated_word:
-            tot = 'RESERVATED_WORD'
+    def generate_token(self, transition):
+        if self.content in self.reservated_words:
+            tot = 'RW'
         else:
             tot = transition["tot"]
         if transition["target"] in range(101, 200):
@@ -271,10 +271,7 @@ class Lexico:
                 self.content = self.content[:-1]
             # print("Comment: No way. I can't generate a token with \n{0}\n".format(self.content))
         else:
-            if self.content in self.reservated_words:
-                self.generate_token(transition, True)
-            else:
-                self.generate_token(transition)
+            self.generate_token(transition)
 
         self.initialize_variables()
         return 1
