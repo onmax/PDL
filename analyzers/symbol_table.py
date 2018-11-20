@@ -35,7 +35,7 @@ class Symbol_Table:
             "type_ret": typeret,
             "nparam": 0,
             "type_param": [],
-            "mode_param": [],
+            "mode_param": ['-'],
             "lex": value,
             "var": False
         }
@@ -103,6 +103,5 @@ class Symbol_Table:
                     if row["var"]:
                         filewriter.writerow([row["id"],row["type"],row["lex"],row["displacement"], '-', '-', '-', '-'])
                     else:
-                        filewriter.writerow([row["id"],'-', row["lex"], '-',row["type_ret"],row["nparam"],','.join(row["type_param"]), ','.join(row["mode_param"])])
-
+                        filewriter.writerow([row["id"],'-', row["lex"], '-',row["type_ret"],row["nparam"],' '.join(row["type_param"]), ' '.join(row["mode_param"])])
 
