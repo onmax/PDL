@@ -1,0 +1,4 @@
+id,tipo,lexema,desplazamiento,tipo retorno,nparam,tipos parametros,modo parametros
+1,int,num,0,-,-,-,-
+2,bool,b,2,-,-,-,-
+3,string,str,3,-,-,-,-

@@ -3,6 +3,8 @@ from colorama import init
 from termcolor import colored
 init()
 
+import csv
+
 from analyzers.lexico import Lexico as lex
 
 
@@ -22,7 +24,8 @@ class Symbol_Table:
             "id": id,
             "type": typeid,
             "lex": value,
-            "displacement": displacement
+            "displacement": displacement,
+            "var": True
         }
         self.tables[current_table].append(row)
 
@@ -33,7 +36,8 @@ class Symbol_Table:
             "nparam": 0,
             "type_param": [],
             "mode_param": [],
-            "lex": value
+            "lex": value,
+            "var": False
         }
         self.tables[current_table].append(row)
 
@@ -90,3 +94,15 @@ class Symbol_Table:
         for table in self.tables:
             with open("./res/symbol_tables/" + table + ".txt" , "w+") as fout:
                 fout.write(pprint.pformat(self.tables[table]))
+
+            with open("./res/symbol_tables/" + table + ".csv" , "w+") as csvfile:
+                filewriter = csv.writer(csvfile, delimiter=',', quotechar=',',
+                            quoting=csv.QUOTE_MINIMAL)
+                filewriter.writerow(['id','tipo','lexema','desplazamiento','tipo retorno','nparam','tipos parametros','modo parametros'])
+                for row in self.tables[table]:
+                    if row["var"]:
+                        filewriter.writerow([row["id"],row["type"],row["lex"],row["displacement"], '-', '-', '-', '-'])
+                    else:
+                        filewriter.writerow([row["id"],'-', row["lex"], '-',row["type_ret"],row["nparam"],','.join(row["type_param"]), ','.join(row["mode_param"])])
+
+

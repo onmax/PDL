@@ -1,1 +1,1 @@
-[{'displacement': 0, 'id': 1, 'lex': 'h', 'type': 'bool'}]
+[{'displacement': 0, 'id': 1, 'lex': 'h', 'type': 'bool', 'var': True}]
